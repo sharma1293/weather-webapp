@@ -1,3 +1,4 @@
+/* eslint-disable */
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -23,6 +24,10 @@ for (startIndex = 18001; startIndex <18099; startIndex++){
 for (startIndex = 10001; startIndex <10096; startIndex++){
     allZipcode.push(startIndex)
 }
+for (startIndex = 90001; startIndex <90050; startIndex++){
+    allZipcode.push(startIndex)
+}
+
 console.log('Number of zipcodes: '+allZipcode.length)
 //All zipcodes added
 // Connect to mongodb
@@ -49,18 +54,20 @@ allZipcode.forEach(getData)
 function getData(currentZipcode) {
     setTimeout(function(){
     console.log('Making Call for zipcode'+currentZipcode)
-    var method = 'http://api.wunderground.com/api/e60d5bd5870e111d/conditions/q/'+currentZipcode+'.json'
-    request({uri: method,
+    var url = 'http://api.wunderground.com/api/e60d5bd5870e111d/conditions/q/'+currentZipcode+'.json'
+    request({uri: url,
         method: 'GET',
         timeout: 10000}, function(err, response, body) {
         console.log('Making request'+currentZipcode)
     if (err) {
-        console.log('error:')
+        console.log('error:'+err+'Response is: '+JSON.stringify(response))
+
     } else {
         var weather = JSON.parse(body)
-        console.log(typeof weather)
-        //console.log('body:', weather.current_observation.display_location.zip)
-        var zip = weather.current_observation.display_location.zip
+        if(weather.response.hasOwnProperty('error')){
+            console.log('Returned query had error, skipping to next')
+        }else{
+            var zip = weather.current_observation.display_location.zip
         var state = weather.current_observation.display_location.state_name
         var city = weather.current_observation.display_location.city
         var country = weather.current_observation.display_location.country
@@ -70,6 +77,7 @@ function getData(currentZipcode) {
         var humidity = weather.current_observation.relative_humidity
 
         storeWeather(zip, state, city, country, weatherValue, temperature, observationTime, humidity)
+        }
     }
 })
 },10000)
@@ -95,3 +103,4 @@ function storeWeather(zipcode, state, city, country, weatherValue, temperature, 
         }
     })
 }
+/* eslint-enable */
