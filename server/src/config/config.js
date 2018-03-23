@@ -1,3 +1,6 @@
 module.exports = {
-	port: 8095
+	port: process.env.PORT || 8095,
+	authentication: {
+    jwtSecret: process.env.JWT_SECRET || 'secret'
+  }
 }
