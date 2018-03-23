@@ -24,10 +24,18 @@ for (startIndex = 18001; startIndex <18099; startIndex++){
 for (startIndex = 10001; startIndex <10096; startIndex++){
     allZipcode.push(startIndex)
 }
-for (startIndex = 90001; startIndex <90050; startIndex++){
+for (startIndex = 90001; startIndex <90096; startIndex++){
     allZipcode.push(startIndex)
 }
-
+for (startIndex = 80101; startIndex <80130; startIndex++){
+    allZipcode.push(startIndex)
+}
+for (startIndex = 70001; startIndex <70011; startIndex++){
+    allZipcode.push(startIndex)
+}
+for (startIndex = 67001; startIndex <67030; startIndex++){
+    allZipcode.push(startIndex)
+}
 console.log('Number of zipcodes: '+allZipcode.length)
 //All zipcodes added
 // Connect to mongodb
@@ -51,7 +59,7 @@ var Weather = mongoose.model('weather', weatherSchema);
 // var method = "/api/" + apiKey + "/conditions/q/" + state + "/" + city + ".json";
 allZipcode.forEach(getData)
 
-function getData(currentZipcode) {
+async function getData(currentZipcode) {
     setTimeout(function(){
     console.log('Making Call for zipcode'+currentZipcode)
     var url = 'http://api.wunderground.com/api/e60d5bd5870e111d/conditions/q/'+currentZipcode+'.json'
