@@ -7,7 +7,7 @@
       <input v-model="email" type="text" id="inputEmail" class="form-control" placeholder="Email address">
       <label for="inputPassword" class="sr-only">Password</label>
       <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" >Sign in</button>
     </form>
   </div>
 </template>
@@ -23,11 +23,11 @@ export default {
       error: false
     }
   },
-  updated () {
-    if (localStorage.token) {
-      this.$router.replace(this.$route.query.redirect || '/Weather')
-    }
-  },
+  // updated () {
+    // if (localStorage.token) {
+      // this.$router.replace(this.$route.query.redirect || '/Weather')
+    // }
+  // },
   methods: {
     login () {
       const response = AuthenticationServices.login({
@@ -47,12 +47,12 @@ export default {
         return
       }
       this.error = false
-      localStorage.token = req.data.token
+      sessionStorage.token = req.data.token
       this.$router.replace(this.$route.query.redirect || '/Weather')
     },
     loginFailed () {
       this.error = 'Login failed!'
-      delete localStorage.token
+      delete sessionStorage.token
     }
   }
 }
