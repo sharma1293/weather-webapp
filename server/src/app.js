@@ -7,7 +7,26 @@ const fs = require('fs')
 var userDataSet = fs.readFileSync('./Data/User.json')
 var userDataJson = JSON.parse(userDataSet)
 const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost:27017/weather-app')
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost:27017/weather-app')
 /* eslint-disable */
+// var Schema = mongoose.Schema
+var weatherSchema = mongoose.Schema({
+    zipcode: String,
+    state: String,
+    city: String,
+    country: String,
+    weather: String,
+    temperature: String,
+    observationTime: String,
+    humidity: String
+})
+weatherSchema.index({zipcode: 1, observationTime: 1})
+
+var Weather = mongoose.model('weather', weatherSchema)
 // const http = require('http')
 
 const app = express()
@@ -20,6 +39,30 @@ app.post('/register', (req, res) => {
         message: 'User registered'
     })
 })
+
+app.get('/zipcode/:id', (req,res) => {
+    console.log('request received'+req.params.id)
+    const zipcode = req.params.id
+    var zipCodeData = checkZipcode(zipcode)
+    console.log(zipCodeData);
+    const zipJson = JSON.stringify(zipCodeData)
+      res.send({
+        data: zipJson
+    })
+})
+
+function checkZipcode(zipcode){
+    console.log('Checking if data is there for zipcode: '+zipcode)
+    var query = Weather.findOne({'zipcode':zipcode}, 'city weather temperature observationTime', function (err, weatherData) {
+    // if (err) return handleError(err);
+    console.log(weatherData)
+  // Prints "Space Ghost is a talk show host".
+  // console.log('%s %s is a %s.', person.name.first, person.name.last,
+    // person.occupation);
+})
+    // console.log(query);
+    return query
+}
 
 app.post('/login', (req, res) => {
 
