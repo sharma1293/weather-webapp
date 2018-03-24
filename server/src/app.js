@@ -43,12 +43,18 @@ app.post('/register', (req, res) => {
 app.get('/zipcode/:id', (req,res) => {
     console.log('request received'+req.params.id)
     const zipcode = req.params.id
-    var zipCodeData = checkZipcode(zipcode)
-    console.log(zipCodeData);
-    const zipJson = JSON.stringify(zipCodeData)
-      res.send({
-        data: zipJson
+    Weather.find({'zipcode':zipcode}, 'city weather temperature observationTime', function(err,weatherData){
+        if (err) {
+            console.log('data not found');
+        }
+        res.json(weatherData)
     })
+    // var zipCodeData = checkZipcode(zipcode)
+    // console.log(zipCodeData);
+    // const zipJson = JSON.stringify(zipCodeData)
+      // res.send({
+        // data: zipJson
+    // })
 })
 
 function checkZipcode(zipcode){
