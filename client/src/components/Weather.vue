@@ -15,29 +15,11 @@
 @click = "getWeatherDetails">Search</b-button>
   </b-form-group>
   </b-form>
-  
-  <!--<b-form-input :size  = "sm"
-  type="text"
-  name="zipcode"
-  v-model="zipcode"
-  placeholder="Enter Zipcode"
-/>
-<b-button :size = "sm" :variant = "secondary" 
-@click = "getLocation">Get Current Location</b-button>
-<br>
-<b-button :size = "sm" :variant = "primary"button 
-@click = "getWeatherDetails">Search</b-button>
--->
 <b-table striped hover :items="weatherDatas" :fields= "fields" v-if="weatherDatas.length > 0">Weather Data</b-table>
 <template slot="City" slot-scope="weatherDatas">
       {{weatherDatas.city}}
     </template>
     <b-button size = "sm" variant = "primary"button v-if="weatherDatas.length > 0" @click = "proceed">Proceed</b-button>
-<!--<ul id="weatherDetais" list-style-type: none>
-  <li v-for="weatherData of weatherDatas">
-    City: {{weatherData.city}} Weather: {{weatherData.weather}} Temperature: {{weatherData.temperature}} Observation Time: {{weatherData.observationTime}}
-    </li>
-</ul>-->
 </div>
 </template>
 <script>
@@ -121,10 +103,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-ul {
-    list-style: none; /* Remove HTML bullets */
-    padding: 40;
-    margin: 10;
-}
+<style>
 </style>

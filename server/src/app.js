@@ -45,6 +45,7 @@ app.get('/zipcode/:id', (req,res) => {
           error: 'No Data Found'
         })
         }
+        console.log(typeof weatherData)
         res.json(weatherData)
     })
     // var zipCodeData = checkZipcode(zipcode)
