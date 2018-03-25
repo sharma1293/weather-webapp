@@ -1,23 +1,26 @@
 <template>
 <div onload="initialize()">
   <h1>Weather</h1>
-  <input
+  <b-form-input :size  = "sm"
   type="text"
   name="zipcode"
   v-model="zipcode"
-  placeholder="zipcode"
+  placeholder="Enter Zipcode"
 />
+<b-button :size = "sm" :variant = "secondary" 
+@click = "getLocation">Get Current Location</b-button>
 <br>
-<button 
-@click = "getLocation">Get Current Location</button>
-<br>
-<button 
-@click = "getWeatherDetails">Search</button>
-<ul id="weatherDetais" list-style-type: none>
+<b-button :size = "sm" :variant = "primary"button 
+@click = "getWeatherDetails">Search</b-button>
+<b-table :items="weatherDatas" :fields= "fields" v-if="weatherDatas.length > 0">Weather Data</b-table>
+<template slot="City" slot-scope="weatherDatas">
+      {{weatherDatas.city}}
+    </template>
+<!--<ul id="weatherDetais" list-style-type: none>
   <li v-for="weatherData of weatherDatas">
     City: {{weatherData.city}} Weather: {{weatherData.weather}} Temperature: {{weatherData.temperature}} Observation Time: {{weatherData.observationTime}}
     </li>
-</ul>
+</ul>-->
 </div>
 </template>
 <script>
@@ -27,6 +30,7 @@ export default {
   data () {
     return {
       zipcode: '',
+      fields: [ 'city', 'weather', 'temperature', 'observationTime'],
       weatherDatas: []
     }
   },
@@ -39,26 +43,9 @@ export default {
 
     },
     async getLocation() {
-      this.zipcode = this.loadLocation(this)
-       // = currentZipcode
-      // var isComplete = false
-      // loadLocation()
-  //     .then(zipId =>{ 
-  //       console.log('Current Value'+zipId);
-  //   this.zipcode = zipId  
-  // }
-  //     )
-      // }
-      // var currentZipcode = function 
-  // console.log('Current Value'+currentZipcode);
-   // .then(function(){
-    // if(isComplete){
-    
-  // }
-  // })
-    },loadLocation(self){
-        var currentZip = ''
-        if (navigator.geolocation) {
+      var self = this
+      // this.zipcode = this.loadLocation(this)
+       if (navigator.geolocation) {
           console.log('getting Location')
           navigator.geolocation.getCurrentPosition(function locationFound (position){
           // var head= document.getElementsByTagName('head')[0],script= document.createElement('script');
@@ -79,13 +66,11 @@ export default {
                         var zip = res[0].formatted_address.match(/,\s\w{2}\s(\d{5})/);
                         if (zip) {
                           console.log(typeof zip[1]);
-                          self.zipcode = '14222'
-                          currentZip = '14211'
-                          console.log(currentZip);
-                          // zip[1]
+                          self.zipcode = zip[1]
+                          // self.getWeatherDetails()
                           console.log(zip[1]);
-                          // this.getWeatherDetails()
-                            // a.value = zip[1];
+                          // self.zipcode = zip[1]
+                          self.getWeatherDetails()
                         } else fail('Unable to look-up postal code');
                     } else {
                         fail('Unable to look-up geolocation');
@@ -106,8 +91,7 @@ export default {
       console.log('Geolocation is not supported by this browser.');
         // x.innerHTML = "Geolocation is not supported by this browser.";
     }
-    return currentZip
-  },initialize() {
+    },initialize() {
     var geocoder = new google.maps.Geocoder();
   }
 
