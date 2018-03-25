@@ -34,11 +34,6 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 
-app.post('/register', (req, res) => {
-    res.send({
-        message: 'User registered'
-    })
-})
 
 app.get('/zipcode/:id', (req,res) => {
     console.log('request received'+req.params.id)
@@ -46,6 +41,9 @@ app.get('/zipcode/:id', (req,res) => {
     Weather.find({'zipcode':zipcode}, 'city weather temperature observationTime', function(err,weatherData){
         if (err) {
             console.log('data not found');
+            res.status(403).send({
+          error: 'No Data Found'
+        })
         }
         res.json(weatherData)
     })

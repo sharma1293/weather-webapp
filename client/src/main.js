@@ -19,5 +19,6 @@ new Vue({
   router,
   render: h => h(App),
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  modules:['bootstrap-vue/nuxt']
 })

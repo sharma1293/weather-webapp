@@ -1,7 +1,22 @@
 <template>
 <div onload="initialize()">
+  <b-form>
   <h1>Weather</h1>
-  <b-form-input :size  = "sm"
+  <b-form-group id = "User input" >
+    <b-form-input id="zipcode"
+                      size = "sm"
+                      type="text"
+                      v-model="zipcode"
+                      placeholder="Enter Zipcode">
+        </b-form-input>
+        <b-button size = "sm" variant = "secondary" 
+@click = "getLocation">Get Current Location</b-button>
+<b-button size = "sm" variant = "primary"button 
+@click = "getWeatherDetails">Search</b-button>
+  </b-form-group>
+  </b-form>
+  
+  <!--<b-form-input :size  = "sm"
   type="text"
   name="zipcode"
   v-model="zipcode"
@@ -12,10 +27,12 @@
 <br>
 <b-button :size = "sm" :variant = "primary"button 
 @click = "getWeatherDetails">Search</b-button>
-<b-table :items="weatherDatas" :fields= "fields" v-if="weatherDatas.length > 0">Weather Data</b-table>
+-->
+<b-table striped hover :items="weatherDatas" :fields= "fields" v-if="weatherDatas.length > 0">Weather Data</b-table>
 <template slot="City" slot-scope="weatherDatas">
       {{weatherDatas.city}}
     </template>
+    <b-button size = "sm" variant = "primary"button v-if="weatherDatas.length > 0" @click = "proceed">Proceed</b-button>
 <!--<ul id="weatherDetais" list-style-type: none>
   <li v-for="weatherData of weatherDatas">
     City: {{weatherData.city}} Weather: {{weatherData.weather}} Temperature: {{weatherData.temperature}} Observation Time: {{weatherData.observationTime}}
@@ -39,7 +56,7 @@ export default {
       console.log('Getting weather details for: '+this.zipcode)
       Api().get('/zipcode/'+this.zipcode) .then(response => {
       this.weatherDatas = response.data
-    })
+    }).catch(() => this.noDataFound())
 
     },
     async getLocation() {
@@ -93,6 +110,10 @@ export default {
     }
     },initialize() {
     var geocoder = new google.maps.Geocoder();
+  }, proceed(){
+    this.$router.replace(this.$route.query.redirect || '/AllData')
+  }, noDataFound(){
+    alert("No data found for provided zipcode, Please enter a valid zipcode")
   }
 
   }
