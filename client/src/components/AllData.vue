@@ -63,6 +63,9 @@ export default {
       this.modelShowBool = !this.modelShowBool  }
   }, mounted(){
     this.initialize()
+    if (!session.token) {
+      this.$router.replace(this.$route.query.redirect || '/')
+    }
   }
 }
 </script>

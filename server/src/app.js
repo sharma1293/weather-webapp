@@ -10,8 +10,8 @@ const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost:27017/weather-app')
-mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost:27017/weather-app')
+// mongoose.Promise = global.Promise
+// mongoose.connect('mongodb://localhost:27017/weather-app')
 /* eslint-disable */
 // var Schema = mongoose.Schema
 var weatherSchema = mongoose.Schema({
