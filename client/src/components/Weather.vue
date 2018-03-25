@@ -13,25 +13,44 @@
 <br>
 <button 
 @click = "getWeatherDetails">Search</button>
-<p id="weatherDetails"></p>
+<ul id="weatherDetais" list-style-type: none>
+  <li v-for="weatherData of weatherDatas">
+    City: {{weatherData.city}} Weather: {{weatherData.weather}} Temperature: {{weatherData.temperature}} Observation Time: {{weatherData.observationTime}}
+    </li>
+</ul>
 </div>
 </template>
 <script>
 import AuthenticationServices from '@/services/AuthenticationServices'
+import Api from '@/services/Api'
 export default {
   data () {
     return {
-      zipcode: ''
+      zipcode: '',
+      weatherDatas: []
     }
   },
   methods: {
     async getWeatherDetails () {
-      console.log('Geting weather details')
-      const response = await AuthenticationServices.register({
-        zipcode: this.zipcode
-      })
-      const x = document.getElementById("weatherDetails")
-      x.innerHTML
+      console.log('Getting weather details for: '+this.zipcode)
+      Api().get('/zipcode/'+this.zipcode) .then(response => {
+      this.weatherDatas = response.data
+    })
+      // console.log(typeof JSON.parse(res.data));
+      // console.log(res);
+
+      // this.weatherDatas = res.data 
+      // const datataa = res.data
+      // console.log(JSON.stringify(this.weatherDatas))
+      // console.log(this.weatherDatas);
+      // console.log(dat);
+      // console.log(JSON.parse(res.body));
+
+      // const response = await AuthenticationServices.register({
+        // zipcode: this.zipcode
+      // })
+      // const x = document.getElementById("weatherDetails")
+      // x.innerHTML
 
       // console.log(response.data);
     },
@@ -52,8 +71,8 @@ export default {
                     if (status == google.maps.GeocoderStatus.OK && typeof res[0] !== 'undefined') {
                         var zip = res[0].formatted_address.match(/,\s\w{2}\s(\d{5})/);
                         if (zip) {
-                          console.log(zip[1]);
                           this.zipcode = zip[1]
+                          console.log(zip[1]);
                             // a.value = zip[1];
                         } else fail('Unable to look-up postal code');
                     } else {
@@ -78,5 +97,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+ul {
+    list-style: none; /* Remove HTML bullets */
+    padding: 40;
+    margin: 10;
+}
 </style>
