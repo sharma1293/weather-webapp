@@ -37,6 +37,9 @@ export default {
     async getWeatherDetails () {
       console.log('Getting weather details for: '+this.zipcode)
       Api().get('/zipcode/'+this.zipcode) .then(response => {
+        if(response.data.length <= 0){
+          this.noDataFound()
+        }
       this.weatherDatas = response.data
     }).catch(() => this.noDataFound())
 
