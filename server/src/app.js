@@ -34,6 +34,19 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 
+app.get('/allData', (req,res) => {
+    console.log('Returning all parameters')
+    Weather.find({}, 'city weather temperature observationTime', function(err,weatherData){
+        if (err) {
+            console.log('data not found');
+            res.status(403).send({
+          error: 'No Data Found'
+        })
+        }
+        // console.log(typeof weatherData)
+        res.json(weatherData)
+    })
+})
 
 app.get('/zipcode/:id', (req,res) => {
     console.log('request received'+req.params.id)
@@ -45,15 +58,9 @@ app.get('/zipcode/:id', (req,res) => {
           error: 'No Data Found'
         })
         }
-        console.log(typeof weatherData)
+        // console.log(typeof weatherData)
         res.json(weatherData)
     })
-    // var zipCodeData = checkZipcode(zipcode)
-    // console.log(zipCodeData);
-    // const zipJson = JSON.stringify(zipCodeData)
-      // res.send({
-        // data: zipJson
-    // })
 })
 
 function checkZipcode(zipcode){
